@@ -63,18 +63,19 @@ def heuristic_rank(prompt, candidates):
 
 
 def jev_request(prompt, candidates):
+    # Wire shape follows node-decision-model: questions is a map keyed by
+    # id, each a typed noul question; answers come back under "answers".
     return {
         "model": JEV_MODEL,
         "state": prompt,
-        "questions": [
-            {
-                "id": c["id"],
-                "text": "Is this skill relevant to the state? "
+        "questions": {
+            c["id"]: {
+                "type": "noul",
+                "instructions": "Is this skill relevant to the state? "
                 + (c.get("description") or ""),
-                "choices": [{"id": "yes"}, {"id": "no"}],
             }
             for c in candidates
-        ],
+        },
     }
 
 
@@ -93,16 +94,11 @@ def jev_rank(prompt, candidates):
     )
     with urllib.request.urlopen(req, timeout=30) as resp:
         payload = json.loads(resp.read().decode())
-    decisions = payload.get("decisions") or payload.get("results") or []
-    by_id = {}
-    for d in decisions:
-        qid = d.get("id") or d.get("question_id")
-        if qid:
-            by_id[qid] = d
+    answers = payload.get("answers") or {}
     ranked = []
     for c in candidates:
-        d = by_id.get(c["id"], {})
-        score = d.get("probability", d.get("confidence", d.get("score", 0)))
+        ans = answers.get(c["id"], {})
+        score = ans.get("noul", ans.get("probability", ans.get("score", 0)))
         ranked.append(
             {"id": c["id"], "score": float(score), "backend": "jev"}
         )

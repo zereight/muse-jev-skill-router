@@ -61,8 +61,10 @@ class RouterTest(unittest.TestCase):
         body = jev_request("review this PR", self.skills[:2])
         self.assertIn("model", body)
         self.assertEqual(body["state"], "review this PR")
-        self.assertEqual(len(body["questions"]), 2)
-        self.assertTrue(all("id" in q and "choices" in q for q in body["questions"]))
+        self.assertEqual(set(body["questions"]),
+                         {"zereight-review", "plantuml-skill"})
+        self.assertTrue(all(q.get("type") == "noul" and "instructions" in q
+                            for q in body["questions"].values()))
 
     def test_cli_end_to_end(self):
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
