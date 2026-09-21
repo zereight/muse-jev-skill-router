@@ -10,8 +10,13 @@ Recommend skills per prompt instead of enabling everything at startup.
 ## Procedure
 
 1. Run the router (no API key needed for the default backend):
-   `python3 scripts/jev-route.py "<user prompt>" --top 5`
+   `python3 scripts/jev-route.py "<user prompt>" --top 5 --with-paths`
+   Non-English prompts work for common intents (ko/ja/zh/es/de/fr seed
+   aliases in `jev-route.py`); otherwise include the English description
+   words or the exact skill name.
 2. Read the `SKILL.md` of each recommended skill id only. Do not read the rest.
+   If `read_skill` refuses with `disabled-skill`, read the file at the
+   printed `path` directly as a plain file instead.
 3. Do not toggle skill activation per prompt: activation changes apply
    from the next run, so routing means reading files, not switching flags.
 
