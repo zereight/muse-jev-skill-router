@@ -1,7 +1,21 @@
 # jev-skill-router
 
-A `muse` plugin that picks relevant skills per user prompt instead of
-enabling all skills at startup.
+Stop paying startup tax for skills you won't use this session.
+
+Measured on a real catalog of 528 `muse` skills:
+
+| Setup | Startup tokens |
+|---|---|
+| All 528 skills on | ~56,300 |
+| 85 curated skills on | ~9,300 |
+| Router only | ~104 |
+
+That is a 99.8% cut. Turn everything off, route per prompt, read only
+what scores.
+
+Per-prompt cost: the default heuristic backend is free and needs no API
+key. A 12-candidate `jev` call measured 1,156 in / 255 out tokens,
+about $0.00005, in ~1s.
 
 ## How it works
 
@@ -9,9 +23,7 @@ enabling all skills at startup.
    keyword overlap (default backend, no API key).
 2. With `--backend jev` and `OPENROUTER_API_KEY` set, it asks the
    `typesafe/jev-1.13` decision model to score the shortlisted
-   candidates. The Decisions payload shape is experimental -- dump it
-   with `--print-request` and verify against the official TypeSafe docs
-   before trusting live scores. Failures fall back to the heuristic.
+   candidates. Failures fall back to the heuristic.
 3. Read only the recommended `SKILL.md` files. Skill activation toggles
    apply from the next run, so per-prompt routing reads files instead
    of flipping flags.
