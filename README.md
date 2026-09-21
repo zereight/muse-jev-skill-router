@@ -28,3 +28,18 @@ enabling all skills at startup.
 python3 plugins/jev-skill-router/scripts/test_router.py
 muse plugins validate plugins/jev-skill-router
 ```
+
+## Install from the marketplace
+
+```bash
+muse plugins marketplace add jev-router https://github.com/zereight/muse-jev-skill-router
+muse plugins install jev-skill-router@jev-router
+```
+
+## Releasing a new version
+
+`marketplace.json` carries the binary-computed `package_sha256`.
+After changing anything under `plugins/jev-skill-router`, reinstall
+from the local path, copy the fresh `package_sha256` out of
+`~/.local/share/muse/plugins/installed.json` (key `plugins.jev-skill-router`)
+into `marketplace.json`, then commit and push. Never hand-compute it.
