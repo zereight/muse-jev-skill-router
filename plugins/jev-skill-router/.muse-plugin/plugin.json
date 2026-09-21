@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "jev-skill-router",
+  "version": "0.1.0",
+  "description": "Pick relevant muse skills per user prompt, optionally judged by jev.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [{"id": "jev-router", "path": "skills/jev-router/SKILL.md"}],
+    "commands": [{"id": "jev-route", "path": "commands/jev-route.md"}],
+    "hooks": [],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

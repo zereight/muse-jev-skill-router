@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "source": "local",
+  "plugins": [
+    {
+      "name": "jev-skill-router",
+      "version": "0.1.0",
+      "install": {
+        "transport": "local-path",
+        "source": "plugins/jev-skill-router"
+      },
+      "availability": {
+        "status": "available"
+      }
+    }
+  ]
+}
